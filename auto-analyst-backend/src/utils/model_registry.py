@@ -11,13 +11,17 @@ PROVIDERS = {
 max_tokens = int(os.getenv("MAX_TOKENS", 6000))
 
 # Clamp temperature to valid range (0..1) for all models
-default_temperature = min(1.0, max(0.0, float(os.getenv("TEMPERATURE", "1.0"))))
+default_temperature = min(
+    1.0, max(0.0, float(os.getenv("TEMPERATURE", "1.0"))))
 
-small_lm = dspy.LM('openai/gpt-4o-mini',max_tokens=300,api_key=os.getenv("OPENAI_API_KEY"), cache=False)
+small_lm = dspy.LM('openai/gpt-4o-mini', max_tokens=300,
+                   api_key=os.getenv("OPENAI_API_KEY"), cache=False)
 
-mid_lm = dspy.LM('openai/gpt-4o-mini',max_tokens=1800,api_key=os.getenv("OPENAI_API_KEY"), cache=False)
+mid_lm = dspy.LM('openai/gpt-4o-mini', max_tokens=1800,
+                 api_key=os.getenv("OPENAI_API_KEY"), cache=False)
 
-gpt_4o_mini = dspy.LM('openai/gpt-4o-mini',max_tokens=4000,api_key=os.getenv("OPENAI_API_KEY"), cache=False)
+gpt_4o_mini = dspy.LM('openai/gpt-4o-mini', max_tokens=4000,
+                      api_key=os.getenv("OPENAI_API_KEY"), cache=False)
 
 
 # Create model API objects
@@ -25,8 +29,8 @@ gpt_4o_mini = dspy.LM('openai/gpt-4o-mini',max_tokens=4000,api_key=os.getenv("OP
 gpt_5_mini = dspy.LM(
     model="openai/gpt-5-mini",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=default_temperature,
-    max_tokens= 16_000,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
+    max_tokens=16_000,
     # max_completion_tokens=max_tokens,
     cache=False
 )
@@ -34,8 +38,8 @@ gpt_5_mini = dspy.LM(
 gpt_5 = dspy.LM(
     model="openai/gpt-5",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=default_temperature,
-    max_tokens= 16_000,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
+    max_tokens=16_000,
     # max_completion_tokens=max_tokens,  # Use max_completion_tokens for gpt-5
     cache=False
 )
@@ -43,8 +47,8 @@ gpt_5 = dspy.LM(
 gpt_5_nano = dspy.LM(
     model="openai/gpt-5-nano",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=default_temperature,
-    max_tokens= 16_000,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
+    max_tokens=16_000,
     # max_completion_tokens=max_tokens,
     cache=False
 )
@@ -52,27 +56,24 @@ gpt_5_nano = dspy.LM(
 gpt_5_2 = dspy.LM(
     model="openai/gpt-5.2",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=float(os.getenv("TEMPERATURE", 1.0)),
-    max_tokens=None,
-    max_completion_tokens=max_tokens,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
+    max_tokens=16_000,
     cache=False
 )
 
 gpt_5_2_pro = dspy.LM(
     model="openai/gpt-5.2-pro",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=float(os.getenv("TEMPERATURE", 1.0)),
-    max_tokens=None,
-    max_completion_tokens=max_tokens,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
+    max_tokens=16_000,
     cache=False
 )
 
 gpt_5_2_chat_latest = dspy.LM(
     model="openai/gpt-5.2-chat-latest",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=float(os.getenv("TEMPERATURE", 1.0)),
-    max_tokens=None,
-    max_completion_tokens=max_tokens,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
+    max_tokens=16_000,
     cache=False
 )
 
@@ -103,7 +104,7 @@ o1_mini = dspy.LM(
 o3 = dspy.LM(
     model="openai/o3-2025-04-16",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=default_temperature,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
     max_tokens=20_000,
     cache=False
 )
@@ -111,7 +112,7 @@ o3 = dspy.LM(
 o3_mini = dspy.LM(
     model="openai/o3-mini",
     api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=default_temperature,
+    temperature=1.0,  # OpenAI reasoning models require temperature=1.0
     max_tokens=20_000,
     cache=False
 )
@@ -122,7 +123,7 @@ claude_4_5_sonnet_latest = dspy.LM(
     temperature=default_temperature,
     max_tokens=max_tokens,
     cache=False
-) 
+)
 
 # Anthropic models
 claude_3_5_haiku_latest = dspy.LM(
@@ -248,7 +249,7 @@ gemini_3_flash = dspy.LM(
 
 MODEL_OBJECTS = {
     # OpenAI models
-    "gpt-4o-mini":gpt_4o_mini,
+    "gpt-4o-mini": gpt_4o_mini,
     "gpt-5-mini": gpt_5_mini,
     "gpt-5": gpt_5,
     "gpt-5-nano": gpt_5_nano,
@@ -260,7 +261,7 @@ MODEL_OBJECTS = {
     "o1-mini": o1_mini,
     "o3": o3,
     "o3-mini": o3_mini,
-    
+
     # Anthropic models
     "claude-3-5-haiku-latest": claude_3_5_haiku_latest,
     "claude-3-7-sonnet-latest": claude_3_7_sonnet_latest,
@@ -271,12 +272,12 @@ MODEL_OBJECTS = {
     "claude-opus-4-20250514": claude_opus_4_20250514,
     "claude-opus-4-1": claude_opus_4_1,
     "claude-opus-4-5-20251101": claude_opus_4_5,
-    
+
     # Groq models
     "deepseek-r1-distill-llama-70b": deepseek_r1_distill_llama_70b,
     "gpt-oss-120B": gpt_oss_120B,
     "gpt-oss-20B": gpt_oss_20B,
-    
+
     # Gemini models
     "gemini-2.5-pro-preview-03-25": gemini_2_5_pro_preview_03_25,
     "gemini-3-pro": gemini_3_pro,
@@ -301,7 +302,8 @@ MODEL_TIERS = {
         "credits": 1,
         "models": [
             "claude-3-5-haiku-latest",
-            "gpt-oss-20B"
+            "gpt-oss-20B",
+            "gpt-4o-mini"
         ]
     },
     "tier2": {
@@ -333,12 +335,11 @@ MODEL_TIERS = {
         "name": "Premium Plus",
         "credits": 20,
         "models": [
-            "gpt-4.5-preview",
             "o1",
             "o1-pro",
             "claude-3-opus-latest",
             "claude-opus-4-20250514",
-            "claude-sonnet-4-5-20250929",
+            "claude-opus-4-1",
             "gpt-5",
             "gpt-5.2",
             "gemini-3-pro"
@@ -357,14 +358,17 @@ MODEL_TIERS = {
 # Model metadata (display name, context window, etc.)
 MODEL_METADATA = {
     # OpenAI
+    "gpt-4o-mini": {"display_name": "GPT-4o Mini", "context_window": 128000},
     "o1": {"display_name": "o1", "context_window": 128000},
     "o1-pro": {"display_name": "o1 Pro", "context_window": 128000},
     "o1-mini": {"display_name": "o1 Mini", "context_window": 128000},
     "o3": {"display_name": "o3", "context_window": 128000},
     "o3-mini": {"display_name": "o3 Mini", "context_window": 128000},
     "gpt-5": {"display_name": "GPT-5", "context_window": 400000},
-    "gpt-5-mini": {"display_name": "GPT-5 Mini", "context_window": 150000},  # estimated
-    "gpt-5-nano": {"display_name": "GPT-5 Nano", "context_window": 64000},    # estimated
+    # estimated
+    "gpt-5-mini": {"display_name": "GPT-5 Mini", "context_window": 150000},
+    # estimated
+    "gpt-5-nano": {"display_name": "GPT-5 Nano", "context_window": 64000},
     "gpt-5.2": {"display_name": "GPT-5.2", "context_window": 400000},
     "gpt-5.2-pro": {"display_name": "GPT-5.2 Pro", "context_window": 400000},
     "gpt-5.2-chat-latest": {"display_name": "GPT-5.2 Chat", "context_window": 400000},
@@ -392,24 +396,28 @@ MODEL_METADATA = {
 
 MODEL_COSTS = {
     "openai": {
-        "o1": {"input": 0.015, "output": 0.06},  
+        "gpt-4o-mini": {"input": 0.00015, "output": 0.0006},
+        "o1": {"input": 0.015, "output": 0.06},
         "o1-pro": {"input": 0.015, "output": 0.6},
-        "o1-mini": {"input": 0.00011, "output": 0.00044}, 
+        "o1-mini": {"input": 0.00011, "output": 0.00044},
         "o3": {"input": 0.002, "output": 0.008},
         "o3-mini": {"input": 0.00011, "output": 0.00044},
-        "gpt-5": {"input": 0.00125, "output": 0.01},         # updated real cost
-        "gpt-5-mini": {"input": 0.00025, "output": 0.002},   # updated real cost
-        "gpt-5-nano": {"input": 0.00005, "output": 0.0004},  # updated real cost
+        # updated real cost
+        "gpt-5": {"input": 0.00125, "output": 0.01},
+        # updated real cost
+        "gpt-5-mini": {"input": 0.00025, "output": 0.002},
+        # updated real cost
+        "gpt-5-nano": {"input": 0.00005, "output": 0.0004},
         "gpt-5.2": {"input": 0.00125, "output": 0.01},
         "gpt-5.2-pro": {"input": 0.002, "output": 0.015},
         "gpt-5.2-chat-latest": {"input": 0.0005, "output": 0.002},
     },
     "anthropic": {
         "claude-3-5-haiku-latest": {"input": 0.00025, "output": 0.000125},
-        "claude-3-5-sonnet-latest": {"input": 0.003, "output": 0.015}, 
+        "claude-3-5-sonnet-latest": {"input": 0.003, "output": 0.015},
         "claude-sonnet-4-20250514": {"input": 0.003, "output": 0.015},
         "claude-sonnet-4-5-20250929": {"input": 0.003, "output": 0.015},
-        "claude-3-opus-latest": {"input": 0.015, "output": 0.075},  
+        "claude-3-opus-latest": {"input": 0.015, "output": 0.075},
         "claude-opus-4-20250514": {"input": 0.015, "output": 0.075},
         "claude-opus-4-1": {"input": 0.015, "output": 0.075},
         "claude-opus-4-5-20251101": {"input": 0.015, "output": 0.075},
@@ -429,14 +437,16 @@ MODEL_COSTS = {
 
 # Helper functions
 
+
 def get_provider_for_model(model_name):
     """Determine the provider based on model name"""
     if not model_name:
         return "Unknown"
-        
+
     model_name = model_name.lower()
-    return next((provider for provider, models in MODEL_COSTS.items() 
+    return next((provider for provider, models in MODEL_COSTS.items()
                 if any(model_name in model for model in models)), "Unknown")
+
 
 def get_model_tier(model_name):
     """Get the tier of a model"""
@@ -445,37 +455,42 @@ def get_model_tier(model_name):
             return tier_id
     return "tier1"  # Default to tier1 if not found
 
+
 def calculate_cost(model_name, input_tokens, output_tokens):
     """Calculate the cost for using the model based on tokens"""
     if not model_name:
         return 0
-        
+
     # Convert tokens to thousands
     input_tokens_in_thousands = input_tokens / 1000
     output_tokens_in_thousands = output_tokens / 1000
-    
+
     # Get model provider
     model_provider = get_provider_for_model(model_name)
-    
+
     # Handle case where model is not found
     if model_provider == "Unknown" or model_name not in MODEL_COSTS.get(model_provider, {}):
         return 0
-        
-    return (input_tokens_in_thousands * MODEL_COSTS[model_provider][model_name]["input"] + 
+
+    return (input_tokens_in_thousands * MODEL_COSTS[model_provider][model_name]["input"] +
             output_tokens_in_thousands * MODEL_COSTS[model_provider][model_name]["output"])
+
 
 def get_credit_cost(model_name):
     """Get the credit cost for a model"""
     tier_id = get_model_tier(model_name)
     return MODEL_TIERS[tier_id]["credits"]
 
+
 def get_display_name(model_name):
     """Get the display name for a model"""
     return MODEL_METADATA.get(model_name, {}).get("display_name", model_name)
 
+
 def get_context_window(model_name):
     """Get the context window size for a model"""
     return MODEL_METADATA.get(model_name, {}).get("context_window", 4096)
+
 
 def get_all_models_for_provider(provider):
     """Get all models for a specific provider"""
@@ -483,6 +498,7 @@ def get_all_models_for_provider(provider):
         return []
     return list(MODEL_COSTS[provider].keys())
 
+
 def get_models_by_tier(tier_id):
     """Get all models for a specific tier"""
-    return MODEL_TIERS.get(tier_id, {}).get("models", []) 
+    return MODEL_TIERS.get(tier_id, {}).get("models", [])

@@ -104,12 +104,32 @@ This dataset appears clean with consistent formatting and no missing values, mak
         try:
             self._default_df = pd.read_csv("Housing.csv")
             self._make_data = {'dataset_python_name':"this dataset is loaded as `df`","description":self._dataset_description}
+            
+            # Quick API key validation before attempting slow VectorStoreIndex
+            import openai
+            api_key = os.getenv("OPENAI_API_KEY", "")
+            if not api_key or api_key.startswith("your-") or api_key == "":
+                raise ValueError("OpenAI API key not configured - skipping embedding initialization")
+            
+            # Quick test to validate the key has quota
+            try:
+                client = openai.OpenAI(api_key=api_key)
+                client.models.list()
+            except Exception as key_err:
+                raise ValueError(f"OpenAI API key validation failed: {key_err}")
+            
             self._default_retrievers = self.initialize_retrievers(self.styling_instructions, [str(self._make_data)])
             # Create default AI system - agents will be loaded from database
             self._default_ai_system = auto_analyst(agents=[], retrievers=self._default_retrievers)
         except Exception as e:
-            logger.log_message(f"Error initializing default dataset: {str(e)}", level=logging.ERROR)
-            raise e
+            logger.log_message(f"Warning: Could not initialize default dataset (API quota issue?): {str(e)}", level=logging.WARNING)
+            # Graceful fallback - server can start without embeddings
+            if not hasattr(self, '_default_df'):
+                self._default_df = pd.read_csv("Housing.csv")
+            if not hasattr(self, '_make_data'):
+                self._make_data = {'dataset_python_name':"this dataset is loaded as `df`","description":self._dataset_description}
+            self._default_retrievers = {"style_index": None, "dataframe_index": [str(self._make_data)]}
+            self._default_ai_system = auto_analyst(agents=[], retrievers=self._default_retrievers)
     
     def initialize_retrievers(self,styling_instructions: List[str], doc: List[str]):
         try:
