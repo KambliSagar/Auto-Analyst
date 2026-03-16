@@ -69,6 +69,16 @@ Use either:
 * Quantitative Finance
 * Web APIs (Slack, Notion, etc.)
 
+### 📊 Market Sentiment Analysis Tool
+
+Auto-Analyst includes a standalone **Market Sentiment System** for forex trading analysis:
+
+* 📰 Fetches and analyzes forex news sentiment using NLP (TextBlob)
+* 📈 Computes technical indicators (SMA, RSI) on real-time price data
+* 💡 Generates actionable BUY/SELL/WAIT trade suggestions
+
+👉 **[Quick Start Guide](QUICKSTART_MARKET_SENTIMENT.md)** | **[Full Documentation](README_MARKET_SENTIMENT.md)**
+
 ---
 
 ## 💬 Planner Mode
